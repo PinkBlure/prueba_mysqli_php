@@ -93,3 +93,5 @@ ALTER TABLE `matriculas`
   ADD CONSTRAINT `fk_matricula_alumnado` FOREIGN KEY (`dni`) REFERENCES `alumnado` (`dni`),
   ADD CONSTRAINT `fk_matricula_aulas_virtuales` FOREIGN KEY (`id_aula`) REFERENCES `aulasVirtuales` (`id`);
 COMMIT;
+
+ALTER TABLE `matriculas` DROP FOREIGN KEY `fk_matricula_alumnado`; ALTER TABLE `matriculas` ADD CONSTRAINT `fk_matricula_alumnado` FOREIGN KEY (`dni`) REFERENCES `alumnado`(`dni`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `matriculas` DROP FOREIGN KEY `fk_matricula_aulas_virtuales`; ALTER TABLE `matriculas` ADD CONSTRAINT `fk_matricula_aulas_virtuales` FOREIGN KEY (`id_aula`) REFERENCES `aulasVirtuales`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
