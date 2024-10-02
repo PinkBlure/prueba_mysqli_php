@@ -31,7 +31,7 @@
             }
 
             // Query para ver la tabla alumnado
-            $resultado_query = $conn->query('select alumnado.dni, alumnado.nombre, alumnado.apellidos, alumnado.email, aulasVirtuales.nombrelargo from alumnado, matriculas, aulasVirtuales where alumnado.dni = matriculas.dni and matriculas.id_aula = aulasVirtuales.id;');
+            $resultado_query = $conn->query('select alumnado.dni, alumnado.nombre, alumnado.apellidos, alumnado.email, aulasvirtuales.nombrelargo from alumnado, matriculas, aulasvirtuales where alumnado.dni = matriculas.dni and matriculas.id_aula = aulasvirtuales.id;');
 
             // Recorrer la query tratándola como a un objeto
             $stock = $resultado_query->fetch_object();

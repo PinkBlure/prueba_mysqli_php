@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 02-10-2024 a las 11:30:21
+-- Tiempo de generación: 02-10-2024 a las 19:28:50
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,11 +24,13 @@ USE `campus`;
 --
 
 DROP TABLE IF EXISTS `alumnado`;
-CREATE TABLE `alumnado` (
+CREATE TABLE IF NOT EXISTS `alumnado` (
   `dni` varchar(9) NOT NULL,
   `nombre` text NOT NULL,
   `apellidos` text NOT NULL,
-  `email` text NOT NULL
+  `email` text NOT NULL,
+  PRIMARY KEY (`dni`),
+  UNIQUE KEY `email` (`email`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -48,21 +50,22 @@ INSERT INTO `alumnado` (`dni`, `nombre`, `apellidos`, `email`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `aulasVirtuales`
+-- Estructura de tabla para la tabla `aulasvirtuales`
 --
 
-DROP TABLE IF EXISTS `aulasVirtuales`;
-CREATE TABLE `aulasVirtuales` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `aulasvirtuales`;
+CREATE TABLE IF NOT EXISTS `aulasvirtuales` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombrecorto` tinytext NOT NULL,
-  `nombrelargo` longtext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `nombrelargo` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `aulasVirtuales`
+-- Volcado de datos para la tabla `aulasvirtuales`
 --
 
-INSERT INTO `aulasVirtuales` (`id`, `nombrecorto`, `nombrelargo`) VALUES
+INSERT INTO `aulasvirtuales` (`id`, `nombrecorto`, `nombrelargo`) VALUES
 (1, 'DWS', 'Desarrollo web en entorno servidor'),
 (2, 'DEW', 'Desarrollo web en entorno cliente');
 
@@ -73,9 +76,11 @@ INSERT INTO `aulasVirtuales` (`id`, `nombrecorto`, `nombrelargo`) VALUES
 --
 
 DROP TABLE IF EXISTS `matriculas`;
-CREATE TABLE `matriculas` (
+CREATE TABLE IF NOT EXISTS `matriculas` (
   `id_aula` int(11) NOT NULL,
-  `dni` varchar(9) NOT NULL
+  `dni` varchar(9) NOT NULL,
+  PRIMARY KEY (`id_aula`,`dni`),
+  KEY `fk_matricula_alumnado` (`dni`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -95,40 +100,6 @@ INSERT INTO `matriculas` (`id_aula`, `dni`) VALUES
 (2, '76543576Y');
 
 --
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `alumnado`
---
-ALTER TABLE `alumnado`
-  ADD PRIMARY KEY (`dni`),
-  ADD UNIQUE KEY `email` (`email`) USING HASH;
-
---
--- Indices de la tabla `aulasVirtuales`
---
-ALTER TABLE `aulasVirtuales`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `matriculas`
---
-ALTER TABLE `matriculas`
-  ADD PRIMARY KEY (`id_aula`,`dni`),
-  ADD KEY `fk_matricula_alumnado` (`dni`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `aulasVirtuales`
---
-ALTER TABLE `aulasVirtuales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- Restricciones para tablas volcadas
 --
 
@@ -137,5 +108,5 @@ ALTER TABLE `aulasVirtuales`
 --
 ALTER TABLE `matriculas`
   ADD CONSTRAINT `fk_matricula_alumnado` FOREIGN KEY (`dni`) REFERENCES `alumnado` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_matricula_aulas_virtuales` FOREIGN KEY (`id_aula`) REFERENCES `aulasVirtuales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_matricula_aulas_virtuales` FOREIGN KEY (`id_aula`) REFERENCES `aulasvirtuales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
