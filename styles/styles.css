@@ -1,0 +1,22 @@
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-style: normal;
+    font-size: 2rem;
+}
+
+table {
+    width: 95%;
+    margin: 0 auto;
+}
+
+th, td {
+    text-align: center;
+}
